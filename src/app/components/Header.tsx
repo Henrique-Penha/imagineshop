@@ -3,6 +3,7 @@
 import { styled } from "styled-components";
 import Image from "next/image";
 
+import { Container } from "../styles/util";
 import Logo from '../../../public/logo.png';
 import ShoppingCartImage from '../../../public/carrinho.png';
 import Link from "next/link";
@@ -41,8 +42,7 @@ const StyledHeader = styled.header`
 `;
 
 const StyledNavbar = styled.nav`
-    width: 1140px;
-    margin: 0 auto;
+    ${Container};
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -67,7 +67,7 @@ const StyledMenuItem = styled.li`
     }
 
     a:hover {
-        color: orange;
+        color: ${({ theme }) => theme.colors.primary};
     }
 `;
 
