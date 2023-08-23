@@ -8,6 +8,12 @@ const nextConfig = {
                 port: '3333',
                 pathname: '/uploads/**',
             },
+            {
+                protocol: 'https',
+                hostname: 'imagineshop-eta.vercel.app',
+                port: '',
+                pathname: '/uploads/**',
+            }
         ],
     }
 }

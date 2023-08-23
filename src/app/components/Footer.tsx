@@ -25,7 +25,6 @@ const Footer = () => {
 };
 
 const StyledFooter = styled.footer`
-    width: 100vw;
     height: 12.rem;
     background-color: #f4f4f4;
 `;
