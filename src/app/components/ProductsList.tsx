@@ -1,37 +1,35 @@
 'use client';
 
-import { ThemeConsumer, styled } from "styled-components";
+import { styled } from "styled-components";
 import { Container } from "../styles/util";
 import Link from "next/link";
-import Image, { StaticImageData } from "next/image";
+import Image from "next/image";
 
-import Logo from "../../../public/logo.png";
-import { Product } from "../interfaces/product";
+import { Product } from "../interfaces/products";
 
 interface ProductsProps {
-  products: Product[];
+  products: Product[]
 }
 
-const Products = ({ products }: ProductsProps) => {
+const ProductsList = ({ products }: ProductsProps) => {
   return (
     <StyledProducts>
-      <StyledTitle>
-        <span>De</span>staque
-      </StyledTitle>
+      <StyledTitle><span>De</span>staques</StyledTitle>
+
       <StyledProductList>
         {
-            products && products.map((product) => {
-             return (
+          products && products.map((product) => {
+            return (
               <StyledProductItem key={product._id}>
-                <Link href="/">
+                <Link href={`products/${product._id}`}>
                   <Image src={product.image} width={230} height={230} alt="produto" />
                   <StyledProductName>{product.name}</StyledProductName>
                   <StyledProductPrice>{product.formattedPrice}</StyledProductPrice>
                   <StyledProductSplitPrice>10x de {product.splitPrice} sem juros</StyledProductSplitPrice>
                 </Link>
               </StyledProductItem>
-             ) 
-            })
+            )
+          })
         }
       </StyledProductList>
     </StyledProducts>
@@ -47,7 +45,6 @@ const StyledTitle = styled.h2`
   font-weight: 700;
   margin-top: 3.125rem;
   margin-bottom: 2.8rem;
-
   span {
     text-decoration: underline ${({ theme }) => theme.colors.primary};
   }
@@ -61,7 +58,7 @@ const StyledProductList = styled.div`
 `;
 
 const StyledProductItem = styled.div`
-  height: 25rem;
+  height: 24rem;
   border: 1px solid #eaeaea;
   border-radius: 4px;
   box-shadow: 5px 0px 10px #d9d9d9;
@@ -70,7 +67,7 @@ const StyledProductItem = styled.div`
   &:hover {
     box-shadow: 5px 10px 10px #d9d9d9;
     p {
-      color: ${({ theme }) => theme.colors.primary};
+      color: ${({ theme }) => theme.colors.primary}
     }
   }
 `;
@@ -82,14 +79,14 @@ const StyledProductName = styled.p`
 const StyledProductPrice = styled.p`
   font-size: 1.125rem;
   font-weight: 700;
-  margin: 1.125rem;
+  margin: 1.125rem 0;
 `;
 
 const StyledProductSplitPrice = styled.small`
   font-size: 0.75rem;
   font-weight: 700;
   color: #999;
-  margin-bottom: 2rem;;
+  margin-bottom: 2rem;
 `;
 
-export default Products;
+export default ProductsList;
