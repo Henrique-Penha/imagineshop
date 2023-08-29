@@ -1,5 +1,5 @@
-import { createContext } from 'react'
-import { Product } from '../interfaces/products'
+import { createContext } from 'react';
+import { Product } from '../interfaces/products';
 
 interface ShoppingCart {
     addProduct: (product: Product) => void;
