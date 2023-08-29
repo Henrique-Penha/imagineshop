@@ -30,9 +30,9 @@ export default function RootLayout({
       <ThemeProvider theme={theme}>
         <body className={montserrat.className}>
           <StyledComponentsRegistry>
-            <Header />
             <ShoppingCartProvider>
-              {children}
+              <Header />
+                {children}
               <Footer />
               <ToastContainer />
             </ShoppingCartProvider>
