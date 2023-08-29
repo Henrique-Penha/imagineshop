@@ -1,15 +1,16 @@
 'use client';
 
-import { Product } from "@/app/interfaces/products";
+import { Product } from "../../../app/interfaces/products";
 import Image from "next/image";
 import { styled } from "styled-components";
 import useSWR from 'swr';
 import { useContext } from "react";
 
 import BannerImage from '../../../../public/banner02.png';
-import Banner from "@/app/components/Banner";
-import { Container } from "@/app/styles/util";
-import { ShoppingCartContext } from "@/app/contexts/ShoppingCart";
+import Banner from "../../../app/components/Banner";
+import { Container } from "../../../app/styles/util";
+import { ShoppingCartContext } from "../../../app/contexts/ShoppingCart";
+import { toast } from "react-toastify";
 
 interface GetProduct {
   product: Product;
@@ -36,6 +37,7 @@ const ProductItem = ({ params }: { params: { productId: string } }) => {
   const { product, isLoading, isError } = getProduct(params.productId);
   const { addProduct } = useContext(ShoppingCartContext);
   const handleAddProduct = () => {
+    toast.success('Produto adicionado ao carrinho.');
     addProduct(product)
   }
 
