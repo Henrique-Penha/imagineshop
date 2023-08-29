@@ -9,7 +9,8 @@ import { Product } from "../interfaces/products";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faX } from "@fortawesome/free-solid-svg-icons";
 import { toast } from "react-toastify";
-import useSWR from "swr";
+import { useRouter } from 'next/navigation';
+
 
 const ShoppingCart = () => {
   const {
@@ -24,11 +25,12 @@ const ShoppingCart = () => {
   const [refreshPage, setRefreshPage] = useState<number>(0);
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
+  const router = useRouter();
 
   useEffect(() => {
     const productsList = getProducts();
     Setproducts(productsList);
-  }, []);
+  }, [refreshPage]);
 
   const deleteProductInPage = (id: string) => {
     toast.success('Produto removido do carrinho.');
@@ -36,8 +38,27 @@ const ShoppingCart = () => {
     setRefreshPage(refreshPage + 1);
   };
 
+  const handleSubmit = async (event: any) => {
+    event.preventDefault();
+    const token = await getToken();
+    if(!token) {
+      toast.error('Falha ao realizar p login.')
+      return;
+    }
+    const productIds: string[] = [];
+    products.map(product => productIds.push(product._id));
+    const sellProducts = await sellAllProducts(token, productIds);
+    if(!sellProducts) {
+      toast.error('Não foi possivel realizar a venda.');
+      return;
+    }
+    toast.success('Venda realizada com sucesso.');
+    clearAll();
+    router.push('/success');
+  }
+
   const getToken = async (): Promise<any> => {
-    return fetch(`${process.env.NEXT_PUBLIC_API}/login`, {
+      const result = await fetch(`${process.env.NEXT_PUBLIC_API}/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -46,14 +67,24 @@ const ShoppingCart = () => {
           email,
           password
         })
-      }).then(r => r.json());
+      })
+      const { access_token } = await result.json();
+      return access_token;
   }
 
-  const handleSubmit = async (event: any) => {
-    event.preventDefault();
-    const access_token = await getToken();
-    console.log(access_token);
+  const sellAllProducts = async (token: string, productIds: string[]): Promise<any> => {
+    const result = await fetch(`${process.env.NEXT_PUBLIC_API}/products/sell`, {
+      method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({ productIds })
+    });
+    if(result.status !== 201) return null;
+    return 'success';
   }
+
 
   return products && products.length > 0 ? (
     <Main>
